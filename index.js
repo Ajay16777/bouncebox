@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 mongooes
-  .connect("mongodb://localhost/BounceBox", { useNewUrlParser: true })
+  .connect("mongodb+srv://Ajay:123ewq@cluster0.azqba7k.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
   .then(() => {
     console.log("Connected to MongoDB");
   })
