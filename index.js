@@ -31,7 +31,30 @@ mongooes
 
   //test route
   app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send(`Api Routes
+    
+    User Routes
+    /api/users/register
+    /api/users/login
+    /api/users/logout
+    /api/users/profile
+    /api/users/update
+    /api/users/delete
+
+    Project Routes
+    /api/projects/create
+    /api/projects/update
+    /api/projects/delete
+
+    //versions Routes
+    /api/versions/create
+    /api/versions/update
+    /api/versions/delete
+    
+    
+    
+    
+    `);
   });
 
 
