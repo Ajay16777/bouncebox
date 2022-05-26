@@ -24,7 +24,7 @@ mongooes
   })
   .finally(() => {
     app.listen(port, host,() => {
-      console.log(`Server started on http://${host}:5200`);
+      console.log(`Server started on http://${host}:${port}`);
     });
   });
 
