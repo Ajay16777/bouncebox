@@ -4,6 +4,9 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
 
+const ip = require("ip");
+let host = ip.address();
+
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -20,8 +23,8 @@ mongooes
     console.log(err);
   })
   .finally(() => {
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+    app.listen(port, host,() => {
+      console.log(`Server started on http://${host}:${port}`);
     });
   });
 
