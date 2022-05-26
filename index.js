@@ -25,6 +25,13 @@ mongooes
     });
   });
 
+
+  //test route
+  app.get("/", (req, res) => {
+    res.send("Hello World");
+  });
+  
+
 app.use("/api/users", require("./routes/User"));
 app.use("/api/projects", require("./routes/Project"));
 app.use("/api/versions", require("./routes/Version"));
