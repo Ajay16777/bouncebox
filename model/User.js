@@ -67,7 +67,7 @@ UserSchema.statics.login = function (email, password) {
 UserSchema.methods.generateAuthToken = function () {
   const user = this;
   //use the user id and IsAdmin to generate a token
-  const token = jwt.sign({ _id: user._id, IsAdmin: user.IsAdmin }, process.env.JWT_KEY);
+  const token = jwt.sign({ _id: user._id, IsAdmin: user.IsAdmin }, "test");
   return token;
 };
 
