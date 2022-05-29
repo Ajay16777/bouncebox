@@ -98,60 +98,11 @@ const check_user_access_project = async (user_id, project_id) => {
 
 //sync folders to s3
 const sync_folders = async (folder_path, key) => {
-  function getFiles(dir, files_) {
-    files_ = files_ || [];
-    var files = fs.readdirSync(dir);
-    for (var i in files) {
-      var name = dir + "/" + files[i];
-      if (fs.statSync(name).isDirectory()) {
-        getFiles(name, files_);
-      } else {
-        files_.push(name);
-      }
-    }   
-    return files_;
-  }
-
-  const files = getFiles(folder_path);
+    //read user files form there pc 
+  const files = fs.readdirSync(folders_path);
+  //upload files to s3
   console.log(files);
-  const fileData = [];
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    console.log(file);
 
-    const fileName = file.split("/").pop();
-    const fileType = file.split(".").pop();
-    const fileSize = fs.statSync(file).size;
-    const filePath = file;
-
-    const fileBuffer = fs.readFileSync(filePath);
-
-    //folder is last part of folder path (e.g. /folder1/folder2/folder3)
-    const folder = folder_path.split("/").pop();
-
-    console.log("folder: " + folder);
-    //split filepath
-    const filePath_ = filePath.split(folder).pop();
-
-    let filekey = key + "/" + folder + filePath_;
-
-    console.log("filekey: " + filekey);
-
-    const params = {
-      Bucket: bucket,
-      Key: filekey,
-      Body: fileBuffer,
-      ContentType: fileType,
-      ContentLength: fileSize,
-    };
-    const data = await s3.upload(params).promise();
-    console.log(data);
-    fileData.push(data);
-  }
-
-  console.log("file data", fileData);
-  console.log("files uploaded");
-  return fileData;
 };
 
 // @route   POST api/projects/version
