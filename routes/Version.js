@@ -99,7 +99,7 @@ const check_user_access_project = async (user_id, project_id) => {
 //sync folders to s3
 const sync_folders = async (folder_path, key) => {
     //read user files form there pc 
-  const files = fs.readdirSync(folders_path);
+  const files = fs.readdirSync(folder_path);
   //upload files to s3
   console.log(files);
 
