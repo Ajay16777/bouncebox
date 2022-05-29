@@ -103,6 +103,11 @@ const sync_folders = async (folder_path, key) => {
   //upload files to s3
   console.log(files);
 
+  //print the current working directory
+  console.log(process.cwd());
+
+  
+
 };
 
 // @route   POST api/projects/version
