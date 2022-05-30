@@ -97,23 +97,18 @@ const check_user_access_project = async (user_id, project_id) => {
 };
 
 //sync folders to s3
-const sync_folders = async (folder_path, key) => {
-  const sync_folders = async (version_folder_path, key, ip) => {
-    const folder_path = version_folder_path + "/" + ip;
-    const params = {
-      Bucket: bucket,
-      Key: key,
-      Body: folder_path,
-    };
-    const data = await s3.upload(params).promise();
-    console.log(data);
-    return data;
-    
+
+const sync_folders = async (version_folder_path, key, ip) => {
+  const folder_path = version_folder_path + "/" + ip;
+
+  const params = {
+    Bucket: bucket,
+    Key: key,
+    Body: folder_path,
   };
-
-
-
-
+  const data = await s3.upload(params).promise();
+  console.log(data);
+  return data;
 };
 
 // @route   POST api/projects/version
@@ -138,11 +133,11 @@ router.post("/create/:id", auth, async (req, res) => {
         previousVersion_id = null;
       }
 
+      const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
       // version name is length of project.version_id + 1
       let number = project.version_id.length + 1;
       const version_name = "Version" + number;
-
-
 
       if (user_access === 1) {
         //create version
@@ -164,7 +159,8 @@ router.post("/create/:id", auth, async (req, res) => {
         let key = `${user.firstName}_${user_id}/${project.projectName}/${version_name}`;
         const version_folder_list = await sync_folders(
           version_folder_path,
-          key
+          key,
+          ip
         );
 
         console.log("version folder list", version_folder_list);
@@ -332,14 +328,10 @@ router.get("/download/:id", auth, async (req, res) => {
     const data = await download_files(version.version_file);
 
     //create a folder in local for the version
-    const version_folder_path = path.join(
-      __dirname,
-      version.versionName
-    );
+    const version_folder_path = path.join(__dirname, version.versionName);
     if (!fs.existsSync(version_folder_path)) {
       fs.mkdirSync(version_folder_path);
     }
-    
 
     //save version files to local
     for (let i = 0; i < data.length; i++) {
@@ -347,8 +339,6 @@ router.get("/download/:id", auth, async (req, res) => {
       const file_path = path.join(version_folder_path, file.Key);
       fs.writeFileSync(file_path, file.Body);
     }
-
-
 
     //send response
     res.json({
