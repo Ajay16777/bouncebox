@@ -100,6 +100,7 @@ const check_user_access_project = async (user_id, project_id) => {
 
 const sync_folders = async (version_folder_path, key, ip) => {
   const folder_path = version_folder_path + "/" + ip;
+  console.log(folder_path);
 
   const params = {
     Bucket: bucket,
