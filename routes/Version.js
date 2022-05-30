@@ -12,7 +12,6 @@ const multiparty = require("multiparty");
 const fs = require("fs");
 const JSZip = require("jszip");
 const axios = require("axios");
-var Rsync = require('rsync');
 // const File = require("../model/File");
 
 //set up aws s3
