@@ -16,7 +16,6 @@ const axios = require("axios");
 
 const syncFolders = require("sync-folders");
 
-
 //set up aws s3
 aws.config.update({
   secretAccessKey: "AKIA5RL3YKDSHONT2KOO",
@@ -102,15 +101,21 @@ const check_user_access_project = async (user_id, project_id) => {
 //sync folders to s3
 
 const sync_folders = async (version_folder_path, key, ip) => {
+  const rsync = new Rsync()
+    .shell("ssh")
+    .flags("avz")
+    .source(version_folder_path)
+    .destination(__dirname);
 
-//sync folders 
-  const sync = await syncFolders(version_folder_path, key);
-  console.log(sync);
-  return sync;
+  rsync.execute(function (error, code, cmd) {
+    if (error) {
+      console.log(error);
+    }
+    console.log(code);
+    console.log(cmd);
+  });
 
-
-
-
+  console.log("folders synced");
 };
 
 // @route   POST api/projects/version
@@ -186,7 +191,7 @@ router.post("/create/:id", auth, async (req, res) => {
 
         //send response
         res.json({
-          success: true
+          success: true,
           // version: version_data,
         });
       } else {
