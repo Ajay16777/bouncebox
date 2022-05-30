@@ -12,6 +12,7 @@ const multiparty = require("multiparty");
 const fs = require("fs");
 const JSZip = require("jszip");
 const axios = require("axios");
+var Rsync = require('rsync');
 // const File = require("../model/File");
 
 //set up aws s3
@@ -98,13 +99,19 @@ const check_user_access_project = async (user_id, project_id) => {
 
 //sync folders to s3
 const sync_folders = async (folder_path, key) => {
-    //read user files form there pc 
-  const files = fs.readdirSync(process.cwd());
-  //upload files to s3
-  console.log(files);
+  const sync_folders = async (version_folder_path, key, ip) => {
+    const folder_path = version_folder_path + "/" + ip;
+    const params = {
+      Bucket: bucket,
+      Key: key,
+      Body: folder_path,
+    };
+    const data = await s3.upload(params).promise();
+    console.log(data);
+    return data;
+    
+  };
 
-  // print the current working directory
-  console.log(process.cwd());
 
 
 
