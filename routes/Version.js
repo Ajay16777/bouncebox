@@ -13,6 +13,7 @@ const fs = require("fs");
 const JSZip = require("jszip");
 const axios = require("axios");
 // const File = require("../model/File");
+const Rsync = require("rsync");
 
 const syncFolders = require("sync-folders");
 
