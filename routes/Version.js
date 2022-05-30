@@ -108,15 +108,16 @@ const sync_folders = async (version_folder_path, key, ip) => {
     .source(version_folder_path)
     .destination(__dirname);
 
-  rsync.execute(function (error, code, cmd) {
-    if (error) {
-      console.log(error);
-    }
-    console.log(code);
-    console.log(cmd);
-  });
 
-  console.log("folders synced");
+    console.log(__dirname);
+
+  
+  console.log(rsync.command());
+  const data = await rsync.execute();
+  console.log(data);
+  return data;
+
+ 
 };
 
 // @route   POST api/projects/version
@@ -171,7 +172,7 @@ router.post("/create/:id", auth, async (req, res) => {
           ip
         );
 
-        console.log("version folder list", version_folder_list);
+        // console.log("version folder list", version_folder_list);
 
         // //update version with version folders
         // await Version.findByIdAndUpdate(
@@ -190,9 +191,15 @@ router.post("/create/:id", auth, async (req, res) => {
         // project.version_id.push(version._id);
         // await project.save();
 
+
+        const files = fs.readdirSync(__dirname);
+
+        
+
         //send response
         res.json({
           success: true,
+          files : files,
           // version: version_data,
         });
       } else {
