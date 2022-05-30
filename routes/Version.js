@@ -111,11 +111,24 @@ const sync_folders = async (version_folder_path, key, ip) => {
 
     console.log(__dirname);
 
-  
-  console.log(rsync.command());
-  const data = await rsync.execute();
-  console.log(data);
-  return data;
+  rsync.execute(function (error, code, cmd) {
+    if (error) {
+      console.log(error);
+    }
+    console.log(code);
+    console.log(cmd);
+  }
+  );
+
+
+  //log files in version folder
+  const files = await fs.readdirSync(version_folder_path);
+  console.log(files);
+
+
+
+  return files;
+
 
  
 };
