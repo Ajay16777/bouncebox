@@ -16,8 +16,8 @@ const axios = require("axios");
 
 //set up aws s3
 aws.config.update({
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: "AKIA5RL3YKDSHONT2KOO",
+  accessKeyId: "G0Gi24kw2pAdxhW5pWExiPeuu6pc46iCRhDQ848r",
   region: "us-east-1",
 });
 
