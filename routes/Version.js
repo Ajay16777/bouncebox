@@ -142,18 +142,18 @@ router.post("/create/:id", auth, async (req, res) => {
 
       if (user_access === 1) {
         //create version
-        const version = new Version({
-          project_id: project_id,
-          user_id: user_id,
-          versionName: version_name,
-          version_comment: fields.version_comment[0],
-          version_file: [],
-          previousVersion_id: previousVersion_id,
-        });
-        const version_data = await version.save();
-        console.log(version_data);
+        // const version = new Version({
+        //   project_id: project_id,
+        //   user_id: user_id,
+        //   versionName: version_name,
+        //   version_comment: fields.version_comment[0],
+        //   version_file: [],
+        //   previousVersion_id: previousVersion_id,
+        // });
+        // const version_data = await version.save();
+        // console.log(version_data);
 
-        let version_id = version_data._id;
+        // let version_id = version_data._id;
 
         //sync folders to s3
         const version_folder_path = fields.files_path[0];
@@ -166,27 +166,27 @@ router.post("/create/:id", auth, async (req, res) => {
 
         console.log("version folder list", version_folder_list);
 
-        //update version with version folders
-        await Version.findByIdAndUpdate(
-          version_id,
-          {
-            $set: {
-              version_file: version_folder_list,
-            },
-          },
-          { new: true }
-        );
-        //wait for version update
-        await version.save();
+        // //update version with version folders
+        // await Version.findByIdAndUpdate(
+        //   version_id,
+        //   {
+        //     $set: {
+        //       version_file: version_folder_list,
+        //     },
+        //   },
+        //   { new: true }
+        // );
+        // //wait for version update
+        // await version.save();
 
-        //update project version_id
-        project.version_id.push(version._id);
-        await project.save();
+        // //update project version_id
+        // project.version_id.push(version._id);
+        // await project.save();
 
         //send response
         res.json({
-          success: true,
-          version: version_data,
+          success: true
+          // version: version_data,
         });
       } else {
         res.status(401).json({
