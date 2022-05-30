@@ -14,6 +14,9 @@ const JSZip = require("jszip");
 const axios = require("axios");
 // const File = require("../model/File");
 
+const syncFolders = require("sync-folders");
+
+
 //set up aws s3
 aws.config.update({
   secretAccessKey: "AKIA5RL3YKDSHONT2KOO",
@@ -99,17 +102,15 @@ const check_user_access_project = async (user_id, project_id) => {
 //sync folders to s3
 
 const sync_folders = async (version_folder_path, key, ip) => {
-  const folder_path = version_folder_path + "/" + ip;
-  console.log(folder_path);
 
-  const params = {
-    Bucket: bucket,
-    Key: key,
-    Body: folder_path,
-  };
-  const data = await s3.upload(params).promise();
-  console.log(data);
-  return data;
+//sync folders 
+  const sync = await syncFolders(version_folder_path, key);
+  console.log(sync);
+  return sync;
+
+
+
+
 };
 
 // @route   POST api/projects/version
